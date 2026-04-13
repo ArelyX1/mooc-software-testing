@@ -4,23 +4,19 @@ public class CaesarShiftCipher {
 
     public String CaesarShiftCipher(String message, int shift){
         StringBuilder sb = new StringBuilder();
-        char currentChar;
-        int length = message.length();
+        int normalizedShift = ((shift % 26) + 26) % 26;
 
-        shift = shift%26;
-
-        for(int i = 0; i < length; i++){
-            currentChar = message.charAt(i);
-           
-            sb.append(currentChar);
-            if (currentChar > 'z' || currentChar < 'a') {
-                return "invalid";
-            } else if ((char) (currentChar + shift) > 'z') {
-                currentChar = (char) (currentChar - 26);
-            } else if ((char) (currentChar + shift) < 'a'){
-                currentChar = (char) (currentChar + 26);
+        for (int i = 0; i < message.length(); i++) {
+            char currentChar = message.charAt(i);
+            if (currentChar == ' ') {
+                sb.append(' ');
+                continue;
             }
-            sb.append((char) (currentChar + shift));
+            if (currentChar < 'a' || currentChar > 'z') {
+                return "invalid";
+            }
+            int shifted = ((currentChar - 'a' + normalizedShift) % 26) + 'a';
+            sb.append((char) shifted);
         }
 
         return sb.toString();
